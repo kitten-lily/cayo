@@ -100,16 +100,16 @@ gen-tags $variant="" $version="":
     # Generate Timestamp with incrementing version point
     TIMESTAMP="$(date +%Y%m%d)"
     LIST_TAGS="$(mktemp)"
-    while [[ ! -s "$LIST_TAGS" ]]; do
-       skopeo list-tags docker://$image_registry/$image_org/$image_name > "$LIST_TAGS"
-    done
-    if [[ $(cat "$LIST_TAGS" | jq "any(.Tags[]; contains(\"$image_tag-$TIMESTAMP\"))") == "true" ]]; then
-       POINT="1"
-       while $(cat "$LIST_TAGS" | jq -e "any(.Tags[]; contains(\"$image_tag-$TIMESTAMP.$POINT\"))")
-       do
-           (( POINT++ ))
-       done
-    fi
+    # while [[ ! -s "$LIST_TAGS" ]]; do
+    #    skopeo list-tags docker://$image_registry/$image_org/$image_name > "$LIST_TAGS"
+    # done
+    # if [[ $(cat "$LIST_TAGS" | jq "any(.Tags[]; contains(\"$image_tag-$TIMESTAMP\"))") == "true" ]]; then
+    #    POINT="1"
+    #    while $(cat "$LIST_TAGS" | jq -e "any(.Tags[]; contains(\"$image_tag-$TIMESTAMP.$POINT\"))")
+    #    do
+    #        (( POINT++ ))
+    #    done
+    # fi
 
     if [[ -n "${POINT:-}" ]]; then
         TIMESTAMP="$TIMESTAMP.$POINT"
